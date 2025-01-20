@@ -3,7 +3,7 @@ pipeline {
     environment {
         GIT_REPO = 'https://github.com/varmaaradhula/EKS-Jenkins.git'
         GIT_BRANCH = 'stage' // Replace with your branch name
-        TF_WORKSPACE = '/terraform' // Replace with your Terraform workspace, if applicable
+        //TF_WORKSPACE = '/terraform' // Replace with your Terraform workspace, if applicable
         AWS_REGION = 'eu-west-2' // Replace with your AWS region
         S3_BUCKET = 'vprofilestate07' // Replace with your S3 bucket name
         S3_KEY = 'terraform/state/terraform.tfstate' // Replace with your desired state file path
