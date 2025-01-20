@@ -54,9 +54,7 @@ pipeline {
             }
         }
         stage('Terraform Plan') {
-            when {
-                branch 'master'
-            }
+           
             steps {
                 echo 'Planning Terraform changes...'
                 sh 'terraform plan -out=tfplan'
