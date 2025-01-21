@@ -11,12 +11,27 @@ pipeline {
         GET_KUBE_CONFIG = false
     }
     stages {
-        stage('Checkout Code') {
+        //stage('Checkout Code') {
+           // steps {
+               // echo 'Checking out Terraform code from GitHub...'
+               // git branch: "${env.BRANCH_NAME}", url: "${GIT_REPO}"
+           // }
+        //}
+        stage('Checkout') {
             steps {
-                echo 'Checking out Terraform code from GitHub...'
-                git branch: "${env.BRANCH_NAME}", url: "${GIT_REPO}"
+                script {
+                    echo "Checking out code from branch: ${env.BRANCH_NAME}"
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: "*/${env.BRANCH_NAME}"]],
+                        userRemoteConfigs: [[
+                            url: "${GIT_REPO}"
+                        ]]
+                    ])
+                }
             }
         }
+
         stage('Configure AWS Credentials') {
             steps {
                 echo 'Configuring AWS credentials...'
