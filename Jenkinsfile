@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         GIT_REPO = 'https://github.com/varmaaradhula/EKS-Jenkins.git'
-        GIT_BRANCH = 'stage' // Replace with your branch name
+        ,,GIT_BRANCH = 'stage' // Replace with your branch name
         TF_PATH = 'terraform' // Replace with your Terraform workspace, if applicable
         AWS_REGION = 'eu-west-2' // Replace with your AWS region
         S3_BUCKET = 'vprofilestate07' // Replace with your S3 bucket name
@@ -14,7 +14,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo 'Checking out Terraform code from GitHub...'
-                git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
+                git branch: "${env.BRANCH_NAME}", url: "${GIT_REPO}"
             }
         }
         stage('Configure AWS Credentials') {
@@ -70,7 +70,7 @@ pipeline {
         }
         stage('Terraform Apply') {
             when {
-                branch 'master'
+                expression { env.BRANCH_NAME == 'master' }
             }
             steps {
                 echo 'Applying Terraform changes...'
