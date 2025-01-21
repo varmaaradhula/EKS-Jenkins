@@ -3,7 +3,7 @@ pipeline {
     environment {
         GIT_REPO = 'https://github.com/varmaaradhula/EKS-Jenkins.git'
         GIT_BRANCH = 'stage' // Replace with your branch name
-        //TF_WORKSPACE = '/terraform' // Replace with your Terraform workspace, if applicable
+        TF_PATH = 'terraform' // Replace with your Terraform workspace, if applicable
         AWS_REGION = 'eu-west-2' // Replace with your AWS region
         S3_BUCKET = 'vprofilestate07' // Replace with your S3 bucket name
         S3_KEY = 'terraform/state/terraform.tfstate' // Replace with your desired state file path
@@ -35,30 +35,38 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 echo 'Initializing Terraform with S3 backend...'
+                dir("${TF_PATH}") {
                 sh '''
                 terraform init \
                     -backend-config="bucket=${S3_BUCKET}"
                 '''
             }
         }
+        }
         stage('Terraform Validate') {
             steps {
                 echo 'Validating Terraform configuration...'
+                dir("${TF_PATH}") {
                 sh 'terraform validate'
             }
         }
-        //stage('Terraform Format') {
-           // steps {
-                //echo 'Formatting Terraform configuration...'
-               // sh 'terraform fmt -check -recursive'
-           // }
-        //}
+        }
+        stage('Terraform Format') {
+           steps {
+                echo 'Formatting Terraform configuration...'
+                dir("${TF_PATH}") {
+                sh 'terraform fmt -check -recursive'
+            }
+        }
+        }
         stage('Terraform Plan') {
            
             steps {
                 echo 'Planning Terraform changes...'
+                dir("${TF_PATH}") {
                 sh 'terraform plan -out=tfplan'
             }
+        }
         }
         stage('Terraform Apply') {
             when {
@@ -67,7 +75,9 @@ pipeline {
             steps {
                 echo 'Applying Terraform changes...'
                 input message: 'Do you want to apply the changes?', ok: 'Apply'
+                dir("${TF_PATH}") {
                 sh 'terraform apply tfplan'
+            }
             }
             post {
                 success {
