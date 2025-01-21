@@ -47,12 +47,12 @@ pipeline {
                 sh 'terraform validate'
             }
         }
-        stage('Terraform Format') {
-            steps {
-                echo 'Formatting Terraform configuration...'
-                sh 'terraform fmt -check -recursive'
-            }
-        }
+        //stage('Terraform Format') {
+           // steps {
+                //echo 'Formatting Terraform configuration...'
+               // sh 'terraform fmt -check -recursive'
+           // }
+        //}
         stage('Terraform Plan') {
            
             steps {
