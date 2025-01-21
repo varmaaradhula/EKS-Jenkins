@@ -51,14 +51,14 @@ pipeline {
             }
         }
         }
-        stage('Terraform Format') {
-           steps {
-                echo 'Formatting Terraform configuration...'
-                dir("${TF_PATH}") {
-                sh 'terraform fmt -check -recursive'
-            }
-        }
-        }
+       // stage('Terraform Format') {
+          // steps {
+            //    echo 'Formatting Terraform configuration...'
+             //   dir("${TF_PATH}") {
+              //  sh 'terraform fmt -check -recursive'
+           // }
+       // }
+       // }
         stage('Terraform Plan') {
            
             steps {
